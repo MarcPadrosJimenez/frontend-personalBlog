@@ -45,18 +45,19 @@
         // "showTextEditor" property is updated)
         this.showNewPost=false;
         const blogPost = document.getElementById("newPost");
-        const data = {
-          date: new Date(),
-          content: blogPost.content,
-          section: this.$route.params.section
-        }
-        axios.post('https://localhost:8000/newPost/', data)
-        .then(response => {
-          console.log('New blog post registered correctly:', response.data);
+        fetch('/newPost/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              content: blogPost.content,
+              section: this.$route.params.section
+          })
         })
-        .catch(error => {
-          console.error('Error when registering a new blog post:', error);
-        });
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
       }
     }
   }
