@@ -2,9 +2,9 @@
   <div class="q-pa-md q-gutter-sm">
     <h2>{{ $route.params.section }}</h2>
     <q-btn color="white" @click="handleClickCreate" text-color="black" label="Create" />
-    <q-btn color="white" v-if="showTextEditor" @click="handleClickSave" text-color="black" label="Save" />
+    <q-btn color="white" v-if="showNewPost" @click="handleClickSave" text-color="black" label="Save" />
   </div>
-  <QuillEditor v-if="showTextEditor" id="newPost" theme="snow" />
+  <QuillEditor v-if="showNewPost" id="newPost" theme="snow" />
   <ul v-if="items.length > 0">
     <li v-for="item in items" :key="item.id"><QuillEditor content={{item.content}} theme="snow" /></li>
   </ul>
@@ -38,12 +38,12 @@
     },
     methods: {
       handleClickCreate() {
-        this.showTextEditor=true;
+        this.showNewPost=true;
       },
       handleClickSave(){
         // Close the text editor after saving the blog post (there is no need to add a refresh page method as Vue renders the page again after the
         // "showTextEditor" property is updated)
-        this.showTextEditor=false;
+        this.showNewPost=false;
         const blogPost = document.getElementById("newPost");
         const data = {
           date: new Date(),
