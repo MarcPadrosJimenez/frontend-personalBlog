@@ -4,9 +4,9 @@
     <q-btn color="white" @click="handleClickCreate" text-color="black" label="Create" />
     <q-btn color="white" v-if="showTextEditor" @click="handleClickSave" text-color="black" label="Save" />
   </div>
-  <QuillEditor v-if="showTextEditor" theme="snow" />
+  <QuillEditor v-if="showTextEditor" id="newPost" theme="snow" />
   <ul v-if="items.length > 0">
-    <li v-for="item in items" :key="item.id"><QuillEditor content={{item.name}} theme="snow" /></li>
+    <li v-for="item in items" :key="item.id"><QuillEditor content={{item.content}} theme="snow" /></li>
   </ul>
   <p v-else>Come on, start posting!</p>
 </template>
@@ -26,31 +26,36 @@
       }
     },
     mounted() {
-      // ciclo de vida mounted, cuando se carga la página
-      this.fetchBlogPosts();
+      // Mounted life cycle, it is when the page is loaded
       const section = this.$route.params.section;
+      axios.get('https://localhost:8000/' + section + '/posts')
+        .then(response => {
+          this.items = response.data;
+        })
+        .catch(error => {
+          console.error(error);
+        })
     },
     methods: {
-      fetchBlogPosts() {
-        axios.get('https://localhost:8000/' + section + '/posts')
-          .then(response => {
-            this.items = response.data;
-          })
-          .catch(error => {
-            console.error(error);
-          })
-      },
       handleClickCreate() {
         this.showTextEditor=true;
       },
       handleClickSave(){
+        // Close the text editor after saving the blog post (there is no need to add a refresh page method as Vue renders the page again after the
+        // "showTextEditor" property is updated)
         this.showTextEditor=false;
-        axios.post('/api/enviarDatos', this.datos)
+        const blogPost = document.getElementById("newPost");
+        const data = {
+          date: new Date(),
+          content: blogPost.content,
+          section: this.$route.params.section
+        }
+        axios.post('https://localhost:8000/newPost/', data)
         .then(response => {
-            // Manejar la respuesta del servidor
+          console.log('New blog post registered correctly:', response.data);
         })
         .catch(error => {
-            // Manejar errores
+          console.error('Error when registering a new blog post:', error);
         });
       }
     }
