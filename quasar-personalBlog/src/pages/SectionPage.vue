@@ -5,8 +5,8 @@
     <q-btn color="white" v-if="showNewPost" @click="handleClickSave" text-color="black" label="Save" />
   </div>
   <QuillEditor v-if="showNewPost" id="newPost" theme="snow" />
-  <ul v-if="items.length > 0">
-    <li v-for="post in posts" :key="post.id"><QuillEditor content={{item.content}} theme="snow" /></li>
+  <ul v-if="posts.length > 0">
+    <li v-for="post in posts" :key="post.id"><QuillEditor content={{post.content}} theme="snow" /></li>
   </ul>
   <p v-else>Come on, start posting!</p>
 </template>
@@ -22,7 +22,8 @@
     },
     data() {
       return {
-        items: []
+        posts: [],
+        showNewPost: false
       }
     },
     mounted() {

@@ -11,8 +11,8 @@
       >
         <q-carousel-slide name="style" class="column no-wrap flex-center">
           <q-img
-            src="../assets/business.jpg"
-            style="width: 50%; height: auto"
+            src="../assets/work.jpg"
+            style="width: 40%; object-fit: contain; height: auto"
           ></q-img>
           <div class="q-mt-md text-center">
             {{ lorem }}
@@ -21,7 +21,7 @@
         <q-carousel-slide name="tv" class="column no-wrap flex-center">
           <q-img
             src="../assets/tennis.jpg"
-            style="width: 50%; height: auto"
+            style="width: 40%; object-fit: contain; height: auto"
           ></q-img>
           <div class="q-mt-md text-center">
             {{ lorem }}
@@ -30,7 +30,7 @@
         <q-carousel-slide name="layers" class="column no-wrap flex-center">
           <q-img
             src="../assets/gym.jpg"
-            style="width: 50%; height: auto"
+            style="width: 40%; object-fit: contain; height: auto"
           ></q-img>
           <div class="q-mt-md text-center">
             {{ lorem }}
@@ -39,7 +39,7 @@
         <q-carousel-slide name="map" class="column no-wrap flex-center">
           <q-img
             src="../assets/trips.jpg"
-            style="width: 50%; height: auto"
+            style="width: 40%; object-fit: contain; height: auto"
           ></q-img>
           <div class="q-mt-md text-center">
             {{ lorem }}
