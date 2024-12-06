@@ -6,7 +6,7 @@
   </div>
   <QuillEditor v-if="showNewPost" id="newPost" theme="snow" />
   <ul v-if="items.length > 0">
-    <li v-for="item in items" :key="item.id"><QuillEditor content={{item.content}} theme="snow" /></li>
+    <li v-for="post in posts" :key="post.id"><QuillEditor content={{item.content}} theme="snow" /></li>
   </ul>
   <p v-else>Come on, start posting!</p>
 </template>
@@ -30,7 +30,7 @@
       const section = this.$route.params.section;
       axios.get('https://localhost:8000/' + section + '/posts')
         .then(response => {
-          this.items = response.data;
+          this.posts = response.data;
         })
         .catch(error => {
           console.error(error);
@@ -61,9 +61,6 @@
       }
     }
   }
-
-
-
 </script>
 
 <style>
