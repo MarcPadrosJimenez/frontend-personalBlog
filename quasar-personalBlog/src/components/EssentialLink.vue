@@ -1,8 +1,7 @@
 <template>
   <q-item
     clickable
-    tag="a"
-    :href="link"
+    :to="href"
     target="_self"
   >
     <q-item-section
@@ -30,9 +29,9 @@ export default {
       type: String,
       default: ''
     },
-    link: {
+    href: {
       type: String,
-      default: '#'
+      required: true
     },
     icon: {
       type: String,

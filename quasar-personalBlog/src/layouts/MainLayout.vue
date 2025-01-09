@@ -26,7 +26,10 @@
         <EssentialLink
           v-for="link in linksList"
           :key="link.title"
-          v-bind="link"
+          :title="link.title"
+          :caption="link.caption"
+          :icon="link.icon"
+          :to="link.path"
         />
       </q-list>
     </q-drawer>
@@ -47,24 +50,29 @@
 
   const linksList = [
     {
+      title: "Home",
+      icon: "code",
+      path: "/",
+    },
+    {
       title: "Work",
       icon: "code",
-      link: "/Work",
+      path: "/Work",
     },
     {
       title: "Tennis",
       icon: "sports_tennis",
-      link: "/Tennis",
+      path: "/Tennis",
     },
     {
       title: "Gym",
       icon: "fitness_center",
-      link: "/Gym",
+      path: "/Gym",
     },
     {
       title: "Trips",
       icon: "flight_takeoff",
-      link: "/Trips",
+      path: "/Trips",
     },
   ];
 

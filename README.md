@@ -1,2 +1,3 @@
 # frontend-personalBlog
-Frontend development of my personal blog
+Frontend development of my personal blog.<br>
+Implementation in Quasar.
