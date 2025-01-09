@@ -21,7 +21,7 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item-label header> Qualities </q-item-label>
 
         <EssentialLink
           v-for="link in linksList"
@@ -49,22 +49,22 @@
     {
       title: "Work",
       icon: "code",
-      link: "/Work/",
+      link: "/Work",
     },
     {
       title: "Tennis",
       icon: "sports_tennis",
-      link: "/Tennis/",
+      link: "/Tennis",
     },
     {
       title: "Gym",
       icon: "fitness_center",
-      link: "/Gym/",
+      link: "/Gym",
     },
     {
       title: "Trips",
       icon: "flight_takeoff",
-      link: "/Trips/",
+      link: "/Trips",
     },
   ];
 

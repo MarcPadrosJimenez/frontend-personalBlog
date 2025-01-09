@@ -1,34 +1,43 @@
 <template>
-  <q-item clickable tag="a" target="_self" :href="props.link">
-    <q-item-section v-if="props.icon" avatar>
-      <q-icon :name="props.icon" />
+  <q-item
+    clickable
+    tag="a"
+    :href="link"
+    target="_self"
+  >
+    <q-item-section
+      v-if="icon"
+      avatar
+    >
+      <q-icon :name="icon" />
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ props.title }}</q-item-label>
+      <q-item-label>{{ title }}</q-item-label>
+      <q-item-label caption>{{ caption }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
 
-<script setup>
-defineOptions({
-  name: "EssentialLink",
-});
-
-const props = defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-
-  link: {
-    type: String,
-    //default: "/#",
-  },
-
-  icon: {
-    type: String,
-    default: "",
-  },
-});
+<script>
+export default {
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    caption: {
+      type: String,
+      default: ''
+    },
+    link: {
+      type: String,
+      default: '#'
+    },
+    icon: {
+      type: String,
+      default: ''
+    }
+  }
+}
 </script>
