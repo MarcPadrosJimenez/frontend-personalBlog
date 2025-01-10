@@ -29,7 +29,7 @@
           :title="link.title"
           :caption="link.caption"
           :icon="link.icon"
-          :to="link.path"
+          :href="link.path"
         />
       </q-list>
     </q-drawer>
@@ -65,9 +65,9 @@
       path: "/Tennis",
     },
     {
-      title: "Gym",
+      title: "Food",
       icon: "fitness_center",
-      path: "/Gym",
+      path: "/Food",
     },
     {
       title: "Trips",

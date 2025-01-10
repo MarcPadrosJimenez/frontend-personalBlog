@@ -29,7 +29,22 @@
     mounted() {
       // Mounted life cycle, it is when the page is loaded
       const section = this.$route.params.section;
-      axios.get('https://localhost:8000/' + section + '/posts')
+      // Store section on server
+      fetch('http://localhost:8000/sections/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: section
+          })
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+
+      // Get the list of section's posts
+      axios.get('http://localhost:8000/' + section + '/posts')
         .then(response => {
           this.posts = response.data;
         })
@@ -46,7 +61,7 @@
         // "showTextEditor" property is updated)
         this.showNewPost=false;
         const blogPost = document.getElementById("newPost");
-        fetch('/newPost/', {
+        fetch('http://localhost:8000/newPost/', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
