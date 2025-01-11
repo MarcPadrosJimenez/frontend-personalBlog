@@ -3,6 +3,7 @@
     <h2>{{ $route.params.section }}</h2>
     <q-btn color="white" @click="handleClickCreate" text-color="black" label="Create" />
     <q-btn color="white" v-if="showNewPost" @click="handleClickSave" text-color="black" label="Save" />
+    <q-btn color="white" v-if="showNewPost" @click="handleClickCancel" text-color="black" label="Cancel" />
   </div>
   <QuillEditor v-if="showNewPost" id="newPost" theme="snow" />
   <ul v-if="posts.length > 0">
@@ -55,6 +56,9 @@
     methods: {
       handleClickCreate() {
         this.showNewPost=true;
+      },
+      handleClickCancel() {
+        this.showNewPost=false;
       },
       handleClickSave(){
         // Close the text editor after saving the blog post (there is no need to add a refresh page method as Vue renders the page again after the
