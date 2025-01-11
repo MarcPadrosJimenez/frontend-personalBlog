@@ -1,6 +1,22 @@
 <template>
   <q-page class="flex flex-center">
     <div class="q-pa-md">
+      <q-card class="my-card bg-secondary text-white">
+        <q-card-section>
+          <div class="text-h6">Contact </div>
+        </q-card-section>
+
+        <q-card-section>
+          <q-btn :icon="mdiLinkedin" />
+          <a href="https://www.linkedin.com/in/marcpadrosjimenez" target="_blank" class="text-white">LinkedIn</a>
+        </q-card-section>
+
+        <q-card-section>
+          <q-btn :icon="mdiEmail" />
+          <a href="mailto:marcpj14@gmail.com" class="text-white">Email</a>
+        </q-card-section>
+      </q-card>
+
       <q-carousel
         v-model="slide"
         transition-prev="slide-right"
@@ -76,3 +92,9 @@ export default {
   },
 };
 </script>
+
+<style lang="sass" scoped>
+.my-card
+  width: 100%
+  max-width: 250px
+</style>
