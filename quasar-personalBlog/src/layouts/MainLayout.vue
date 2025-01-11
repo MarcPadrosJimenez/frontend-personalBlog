@@ -19,6 +19,14 @@
       </q-toolbar>
     </q-header>
 
+    <q-footer elevated>
+      <q-toolbar>
+        <q-toolbar-title>
+          © 2025 Marc Padrós Jiménez
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-footer>
+
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header> Qualities </q-item-label>
@@ -51,7 +59,7 @@
   const linksList = [
     {
       title: "Home",
-      icon: "code",
+      icon: "home",
       path: "/",
     },
     {
@@ -65,9 +73,9 @@
       path: "/Tennis",
     },
     {
-      title: "Food",
-      icon: "fitness_center",
-      path: "/Food",
+      title: "Cooking",
+      icon: "outdoor_grill",
+      path: "/Cooking",
     },
     {
       title: "Trips",

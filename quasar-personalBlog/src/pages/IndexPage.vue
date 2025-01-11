@@ -1,21 +1,34 @@
 <template>
   <q-page class="flex flex-center">
     <div class="q-pa-md">
-      <q-card class="my-card bg-secondary text-white">
-        <q-card-section>
-          <div class="text-h6">Contact </div>
-        </q-card-section>
+      <div class="row justify-center">
+        <q-card class="my-card text-white">
+          <q-card-section>
+            <div class="text-h6">Contact</div>
+          </q-card-section>
 
-        <q-card-section>
-          <q-btn :icon="mdiLinkedin" />
-          <a href="https://www.linkedin.com/in/marcpadrosjimenez" target="_blank" class="text-white">LinkedIn</a>
-        </q-card-section>
+          <q-card-section>
+            <a href="https://www.linkedin.com/in/marcpadrosjimenez" target="_blank" class="text-white">
+              <q-icon name="mdi-linkedin" />
+            </a>
+            <span>Here you can check out my resume</span>
+          </q-card-section>
 
-        <q-card-section>
-          <q-btn :icon="mdiEmail" />
-          <a href="mailto:marcpj14@gmail.com" class="text-white">Email</a>
-        </q-card-section>
-      </q-card>
+          <q-card-section>
+            <a href="https://github.com/MarcPadrosJimenez" target="_blank" class="text-white">
+              <q-icon name="mdi-github" />
+            </a>
+            <span>Here you can check out my projects</span>
+          </q-card-section>
+
+          <q-card-section>
+            <a href="mailto:marcpj14@gmail.com" class="text-white">
+              <q-icon name="mdi-email" />
+            </a>
+            <span>And you can send me an email at marcpj14@gmail.com</span>
+          </q-card-section>
+        </q-card>
+      </div>
 
       <q-carousel
         v-model="slide"
@@ -26,39 +39,47 @@
         class="rounded-borders"
       >
         <q-carousel-slide name="style" class="column no-wrap flex-center">
-          <q-img
-            src="../assets/work.jpg"
-            style="width: 40%; object-fit: contain; height: auto"
-          ></q-img>
+          <div class="image-container">
+            <q-img
+            src="../assets/Work/work.jpg"
+            style="object-fit: contain; width: 100%; height: 100%;"
+            ></q-img>
+          </div>
           <div class="q-mt-md text-center">
-            {{ lorem }}
+            {{ work }}
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="tv" class="column no-wrap flex-center">
-          <q-img
-            src="../assets/tennis.jpg"
-            style="width: 40%; object-fit: contain; height: auto"
-          ></q-img>
+          <div class="image-container">
+            <q-img
+            src="../assets/Tennis/tennis.jpg"
+            style="object-fit: contain; width: 100%; height: 100%"
+            ></q-img>
+          </div>
           <div class="q-mt-md text-center">
-            {{ lorem }}
+            {{ tennis }}
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="layers" class="column no-wrap flex-center">
-          <q-img
-            src="../assets/gym.jpg"
-            style="width: 40%; object-fit: contain; height: auto"
-          ></q-img>
+          <div class="image-container">
+            <q-img
+            src="../assets/Cooking/paella.jpg"
+            style="object-fit: contain; width: 100%; height: 100%"
+            ></q-img>
+          </div>
           <div class="q-mt-md text-center">
-            {{ lorem }}
+            {{ cooking }}
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="map" class="column no-wrap flex-center">
-          <q-img
-            src="../assets/trips.jpg"
-            style="width: 40%; object-fit: contain; height: auto"
-          ></q-img>
+          <div class="image-container">
+            <q-img
+            src="../assets/Trips/trips.jpg"
+            style="object-fit: contain; width: 100%; height: 100%"
+            ></q-img>
+          </div>
           <div class="q-mt-md text-center">
-            {{ lorem }}
+            {{ trips }}
           </div>
         </q-carousel-slide>
       </q-carousel>
@@ -80,21 +101,46 @@
 </template>
 
 <script>
-import { ref } from "vue";
+  import { ref } from "vue";
+  import SvgIcon from '@jamescoyle/vue-icon';
+  import { mdiLinkedin } from '@mdi/js';
 
-export default {
-  setup() {
-    return {
-      slide: ref("style"),
-      lorem:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam, architecto cupiditate officia rerum, error dignissimos praesentium libero ab nemo provident incidunt ducimus iusto perferendis porro earum. Totam, numquam?",
-    };
-  },
+  export default {
+    setup() {
+      return {
+        slide: ref("style"),
+        work:
+          "I am a software developer graduated in Computer Engineering and passionate about learning cutting edge technologies",
+        tennis:
+          "Tennis is my favorite sport. I have been playing since I was 10 years old and I am a federated player",
+        cooking:
+          "Cooking is one of my hobbies. I love to cook and try new recipes. My favorite dish is paella",
+        trips:
+          "I love to travel and discover new places. I want to visit all the countries in the world",
+      };
+    },
 };
 </script>
 
 <style lang="sass" scoped>
 .my-card
   width: 100%
-  max-width: 250px
+  max-width: 450px
+  background-color: rgb(19, 89, 160)
+  margin-bottom: 5px
+  margin-top: 5px
+
+.q-icon
+  font-size: 30px
+  margin-right: 10px
+</style>
+
+<style>
+  .image-container {
+    width: 500px; /* Ajusta el ancho según tus necesidades */
+    height: 300px; /* Ajusta la altura según tus necesidades */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>

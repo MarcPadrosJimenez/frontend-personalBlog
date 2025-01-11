@@ -60,14 +60,15 @@
         // Close the text editor after saving the blog post (there is no need to add a refresh page method as Vue renders the page again after the
         // "showTextEditor" property is updated)
         this.showNewPost=false;
-        const blogPost = document.getElementById("ql-editor");
+        const blogPost = document.getElementById("newPost");
+        const textEditor = blogPost.getElementsByClassName("ql-editor")[0];
         fetch('http://localhost:8000/newPost/', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-              content: blogPost.innerText,
+              content: textEditor.innerText,
               section: this.$route.params.section
           })
         })
