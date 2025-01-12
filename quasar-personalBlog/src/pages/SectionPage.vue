@@ -31,7 +31,7 @@
       // Mounted life cycle, it is when the page is loaded
       const section = this.$route.params.section;
       // Store section on server
-      fetch('http://localhost:8000/sections/', {
+      fetch('http://localhost:8000/blogApp/sections/', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -45,7 +45,7 @@
       .catch(error => console.error(error));
 
       // Get the list of section's posts
-      axios.get('http://localhost:8000/' + section + '/posts')
+      axios.get('http://localhost:8000/blogApp/' + section + '/posts')
         .then(response => {
           this.posts = response.data;
         })
@@ -66,13 +66,13 @@
         this.showNewPost=false;
         const blogPost = document.getElementById("newPost");
         const textEditor = blogPost.getElementsByClassName("ql-editor")[0];
-        fetch('http://localhost:8000/newPost/', {
+        fetch('http://localhost:8000/blogApp/posts/', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-              content: textEditor.innerText,
+              content: textEditor.innerHTML, // Get the HTML content of the text editor, as we need to control styling like headings, bold, italic, etc.
               section: this.$route.params.section
           })
         })
