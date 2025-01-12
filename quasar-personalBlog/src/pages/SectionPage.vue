@@ -30,31 +30,34 @@
     },
     mounted() {
       // Mounted life cycle, it is when the page is loaded
-      const section = this.$route.params.section;
-      // Store section on server
-      fetch('http://localhost:8000/blogApp/sections/', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: section
-          })
-      })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
-
-      // Get the list of section's posts
-      axios.get('http://localhost:8000/blogApp/' + section + '/posts')
-        .then(response => {
-          this.posts = response.data;
-        })
-        .catch(error => {
-          console.error(error);
-        })
+      this.fetchSectionData();
     },
     methods: {
+      fetchSectionData() {
+        const section = this.$route.params.section;
+        // Store section on server
+        fetch('http://localhost:8000/blogApp/sections/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: section
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+
+        // Get the list of section's posts
+        axios.get('http://localhost:8000/blogApp/' + section + '/posts')
+          .then(response => {
+            this.posts = response.data;
+          })
+          .catch(error => {
+            console.error(error);
+          })
+      },
       handleClickCreate() {
         this.showNewPost=true;
         this.showCreateBtn=false;
@@ -84,6 +87,10 @@
         .then(data => console.log(data), this.showCreateBtn=true)
         .catch(error => console.error(error));
       }
+    },
+    beforeRouteUpdate(to, from, next) { // this is a Vue Router life cycle hook that runs every time the route changes even if the component has been mounted
+      this.fetchSectionData();
+      next();
     }
   }
 </script>
