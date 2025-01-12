@@ -66,14 +66,15 @@
         this.showNewPost=false;
         const blogPost = document.getElementById("newPost");
         const textEditor = blogPost.getElementsByClassName("ql-editor")[0];
-        fetch('http://localhost:8000/blogApp/posts/', {
+        const section = this.$route.params.section;
+
+        fetch('http://localhost:8000/blogApp/' + section + 'posts/', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
           },
           body: JSON.stringify({
               content: textEditor.innerHTML, // Get the HTML content of the text editor, as we need to control styling like headings, bold, italic, etc.
-              section: this.$route.params.section
           })
         })
         .then(response => response.json())
