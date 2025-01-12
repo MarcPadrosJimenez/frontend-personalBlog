@@ -68,7 +68,7 @@
         const textEditor = blogPost.getElementsByClassName("ql-editor")[0];
         const section = this.$route.params.section;
 
-        fetch('http://localhost:8000/blogApp/' + section + 'posts/', {
+        fetch('http://localhost:8000/blogApp/' + section + 'posts/create', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
