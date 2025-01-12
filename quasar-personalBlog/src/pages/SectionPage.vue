@@ -42,6 +42,7 @@
             <button class="ql-clean"></button>
             <!-- But you can also add your own -->
             <button :id="'editBtn-' + post.id" @click="editPost(post.id)">Edit</button> <!-- the : allows generating the id dynamically -->
+            <button :id="'deleteBtn-' + post.id" @click="deletePost(post.id)">Delete</button> <!-- the : allows generating the id dynamically -->
           </div>
         </template>
       </QuillEditor>
@@ -132,6 +133,9 @@
         this.showCreateBtn = false;
         console.log(`Edit post with ID: ${postId}`);
         console.log(this.editablePostId = postId);
+      },
+      deletePost(postId) {
+        console.log(`Delete post with ID: ${postId}`);
       }
     },
     beforeRouteUpdate(to, from, next) { // this is a Vue Router life cycle hook that runs every time the route changes even if the component has been mounted
