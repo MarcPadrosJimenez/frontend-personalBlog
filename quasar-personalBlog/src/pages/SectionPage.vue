@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
     <h2>{{ $route.params.section }}</h2>
-    <q-btn color="white" @click="handleClickCreate" text-color="black" label="Create" />
+    <q-btn color="white" v-if="showCreateBtn" @click="handleClickCreate" text-color="black" label="Create" />
     <q-btn color="white" v-if="showNewPost" @click="handleClickSave" text-color="black" label="Save" />
     <q-btn color="white" v-if="showNewPost" @click="handleClickCancel" text-color="black" label="Cancel" />
   </div>
@@ -24,7 +24,8 @@
     data() {
       return {
         posts: [],
-        showNewPost: false
+        showNewPost: false,
+        showCreateBtn: true
       }
     },
     mounted() {
@@ -56,6 +57,8 @@
     methods: {
       handleClickCreate() {
         this.showNewPost=true;
+        this.showCreateBtn=false;
+
       },
       handleClickCancel() {
         this.showNewPost=false;
@@ -68,7 +71,7 @@
         const textEditor = blogPost.getElementsByClassName("ql-editor")[0];
         const section = this.$route.params.section;
 
-        fetch('http://localhost:8000/blogApp/' + section + 'posts/create/', {
+        fetch('http://localhost:8000/blogApp/' + section + '/posts/create/', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
