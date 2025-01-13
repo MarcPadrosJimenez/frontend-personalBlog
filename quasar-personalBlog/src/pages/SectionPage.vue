@@ -1,14 +1,14 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
     <h2>{{ $route.params.section }}</h2>
-    <q-btn color="white" v-if="showCreateBtn" @click="handleClickCreate" text-color="black" label="Create" />
-    <q-btn color="white" v-if="showTextEditor" @click="handleClickSave" text-color="black" label="Save" />
-    <q-btn color="white" v-if="showTextEditor" @click="handleClickCancel" text-color="black" label="Cancel" />
+    <q-btn color="white" v-if="!enableWriting" @click="handleClickCreate" text-color="black" label="Create" />
+    <q-btn color="white" v-if="enableWriting" @click="handleClickSave" text-color="black" label="Save" />
+    <q-btn color="white" v-if="enableWriting" @click="handleClickCancel" text-color="black" label="Cancel" />
   </div>
-  <QuillEditor v-if="showTextEditor && newPost" id="newPost" theme="snow" /> <!-- TODO: understand why the v-if order matters-->
+  <QuillEditor v-if="enableWriting && newPost" id="newPost" :modules="modules" theme="snow" toolbar="full" /> <!-- TODO: understand why the v-if order matters-->
   <ul v-if="posts.length > 0">
     <li v-for="post in posts" :key="post.id" class="postItem">
-      <QuillEditor :toolbar="'#customToolbar-' + post.id" content-type="html" v-model:content="post.content" :readOnly="editablePostId !== post.id">
+      <QuillEditor :toolbar="'#customToolbar-' + post.id" content-type="html" :modules="modules" v-model:content="post.content" :readOnly="true" :ref="'quillEditor-' + post.id">
         <template #toolbar>
           <div :id="'customToolbar-' + post.id">
             <!-- Add font size dropdown -->
@@ -41,7 +41,7 @@
             <button class="ql-formula"></button>
             <button class="ql-clean"></button>
             <!-- But you can also add your own -->
-            <button :id="'editBtn-' + post.id" @click="editPost(post.id)">Edit</button> <!-- the : allows generating the id dynamically -->
+            <button :id="'editBtn-' + post.id" @click="makePostEditable(post.id)">Edit</button> <!-- the : allows generating the id dynamically -->
             <button :id="'deleteBtn-' + post.id" @click="deletePost(post.id)">Delete</button> <!-- the : allows generating the id dynamically -->
           </div>
         </template>
@@ -54,29 +54,59 @@
 <script>
   import { QuillEditor } from '@vueup/vue-quill';
   import '@vueup/vue-quill/dist/vue-quill.snow.css';
-  import axios from 'axios';
+  import '@vueup/vue-quill/dist/vue-quill.bubble.css';
+  import ImageUploader from "quill-image-uploader";
+  import 'quill-image-uploader/dist/quill.imageUploader.min.css';
 
-  export default {
+  import axios from 'axios';
+  import { ref, defineComponent } from 'vue';
+
+  export default defineComponent({
     components: {
       QuillEditor
     },
     data() {
       return {
         posts: [],
-        showTextEditor: false,
-        showCreateBtn: true,
+        enableWriting: false,
         newPost: false,
         editablePostId: 0
       }
     },
     mounted() {
-      // Mounted life cycle, it is when the page is loaded
+      // It is executed after the component has been mounted on the DOM
       this.fetchSectionData(this.$route.params.section);
+    },
+    setup() {
+      // setup() gets called before the component is created
+      // Register the image uploader module
+      const modules = {
+        name: 'imageUploader',
+        module: ImageUploader,
+        options: {
+          upload: file => {
+            return new Promise((resolve, reject) => {
+              const formData = new FormData();
+              formData.append("image", file);
+
+              axios.post('/upload-image', formData)
+                .then(res => {
+                  console.log(res);
+                  resolve(res.data.url);
+                })
+                .catch(err => {
+                  reject("Upload failed");
+                  console.error("Error:", err);
+                });
+            });
+          }
+        }
+      };
     },
     methods: {
       fetchSectionData(section) {
         // Store section on server
-        fetch('http://localhost:8000/blogApp/sections/', {
+        fetch('http://localhost:8000/blogApp/api/sections', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -86,11 +116,10 @@
             })
         })
         .then(response => response.json())
-        .then(data => console.log(data))
         .catch(error => console.error(error));
 
         // Get the list of section's posts
-        axios.get('http://localhost:8000/blogApp/' + section + '/posts')
+        axios.get('http://localhost:8000/blogApp/api/sections/' + section + '/posts')
           .then(response => {
             this.posts = response.data;
           })
@@ -99,23 +128,32 @@
           })
       },
       handleClickCreate() {
-        this.showTextEditor=true;
-        this.showCreateBtn=false;
+        this.enableWriting=true;
         this.newPost=true
-
       },
       handleClickCancel() {
-        this.showTextEditor=false;
-        this.showCreateBtn=true
+        this.enableWriting=false;
+        this.newPost=false;
+        if (this.editablePostId > 0) { // If the user cancels editing a post, disable the editor and make it read-only
+          const quillEditor = this.$refs['quillEditor-' + this.editablePostId][0];
+          quillEditor.getQuill().disable();
+        }
       },
       handleClickSave(){
         // Close the text editor after saving the blog post (there is no need to add a refresh page method as Vue renders the page again after the
-        // "showTextEditor" property is updated)
+        // "enableWriting" property is updated)
+        if (this.enableWriting && this.newPost) {
+          this.createPost();
+        } else {
+          this.editPost(this.editablePostId);
+        }
+      },
+      createPost() {
         const blogPost = document.getElementById("newPost");
         const textEditor = blogPost.getElementsByClassName("ql-editor")[0];
         const section = this.$route.params.section;
 
-        fetch('http://localhost:8000/blogApp/' + section + '/posts/create/', {
+        fetch('http://localhost:8000/blogApp/api/sections/' + section + '/posts/create', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -124,25 +162,64 @@
               content: textEditor.innerHTML, // Get the HTML content of the text editor, as we need to control styling like headings, bold, italic, etc.
           })
         })
-        .then(response => response.json())
-        .then(data => console.log(data), this.showCreateBtn=true, this.newPost=false)
+        .then(response => response.json(), "Post created successfully")
+        .then(data => this.posts.unshift(data), this.newPost=false, this.enableWriting=false) // unshift() adds the new post to the beginning of the posts array
         .catch(error => console.error(error));
       },
       editPost(postId) {
-        this.showTextEditor = true;
-        this.showCreateBtn = false;
+        this.enableWriting = true;
         console.log(`Edit post with ID: ${postId}`);
-        console.log(this.editablePostId = postId);
+        const quillEditor = this.$refs['quillEditor-' + postId][0];
+        fetch('http://localhost:8000/blogApp/api/posts/' + postId + '/update', {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              content: quillEditor.getHTML(), // Get the HTML content of the text editor, as we need to control styling like headings, bold, italic, etc.
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Post " + postId + " has been updated");
+          this.posts.find(post => post.id === postId).content = data.content; // Update the content of the post in the posts array
+          quillEditor.getQuill().disable(); // Disable the editor after saving the post, make it read-only
+          this.enableWriting = false;
+        })
+        .catch(error => console.error('There was a problem with the fetch operation:', error));
+      },
+      makePostEditable(postId) {
+        this.editablePostId = postId;
+        const quillEditor = this.$refs['quillEditor-' + postId][0];
+        quillEditor.getQuill().enable(true); // Enable the editor to allow editing the post
+        this.enableWriting = true;
       },
       deletePost(postId) {
         console.log(`Delete post with ID: ${postId}`);
+        fetch('http://localhost:8000/blogApp/api/posts/' + postId + "/delete", {
+          method: 'DELETE',
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          console.log("Post " + postId + " has been deleted");
+          // Remove the post from the posts array
+          this.posts = this.posts.filter(post => post.id !== postId);
+        })
+        .catch(error => console.error('There was a problem with the fetch operation:', error));
       }
     },
     beforeRouteUpdate(to, from, next) { // this is a Vue Router life cycle hook that runs every time the route changes even if the component has been mounted
       this.fetchSectionData(to.params.section); // we call the fetchSectionData method with the new section name
       next(); // gives Vue Router the order to continue with the navigation to the new route
     }
-  }
+  })
 </script>
 
 <style>
