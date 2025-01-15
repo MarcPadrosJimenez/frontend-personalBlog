@@ -77,7 +77,7 @@
     methods: {
       fetchSectionData(section) {
         // Store section on server
-        fetch('http://localhost:8000/blogApp/api/sections', {
+        fetch('http://MarcPadrosJimenez.pythonanynwhere.com/blogApp/api/sections', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -90,7 +90,7 @@
         .catch(error => console.error(error));
 
         // Get the list of section's posts
-        axios.get('http://localhost:8000/blogApp/api/sections/' + section + '/posts')
+        axios.get('http://MarcPadrosJimenez.pythonanynwhere.com/blogApp/api/sections/' + section + '/posts')
           .then(response => {
             this.posts = response.data;
           })
@@ -124,7 +124,7 @@
         const textEditor = blogPost.getElementsByClassName("ql-editor")[0];
         const section = this.$route.params.section;
 
-        fetch('http://localhost:8000/blogApp/api/sections/' + section + '/posts/create', {
+        fetch('http://MarcPadrosJimenez.pythonanynwhere.com/blogApp/api/sections/' + section + '/posts/create', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -141,7 +141,7 @@
         this.enableWriting = true;
         console.log(`Edit post with ID: ${postId}`);
         const quillEditor = this.$refs['quillEditor-' + postId][0];
-        fetch('http://localhost:8000/blogApp/api/posts/' + postId + '/update', {
+        fetch('http://MarcPadrosJimenez.pythonanynwhere.com/blogApp/api/posts/' + postId + '/update', {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json'
@@ -172,7 +172,7 @@
       },
       deletePost(postId) {
         console.log(`Delete post with ID: ${postId}`);
-        fetch('http://localhost:8000/blogApp/api/posts/' + postId + "/delete", {
+        fetch('http://MarcPadrosJimenez.pythonanynwhere.com/blogApp/api/posts/' + postId + "/delete", {
           method: 'DELETE',
         })
         .then(response => {
