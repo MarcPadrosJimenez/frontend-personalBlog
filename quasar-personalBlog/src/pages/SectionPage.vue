@@ -48,20 +48,17 @@
       </QuillEditor>
     </li>
   </ul>
-  <p v-else>Come on, start posting!</p>
+  <p v-else-if="!enableWriting" style="margin-left: 30px">Come on, start posting!</p>
 </template>
 
 <script>
   import { QuillEditor } from '@vueup/vue-quill';
   import '@vueup/vue-quill/dist/vue-quill.snow.css';
   import '@vueup/vue-quill/dist/vue-quill.bubble.css';
-  import ImageUploader from "quill-image-uploader";
-  import 'quill-image-uploader/dist/quill.imageUploader.min.css';
 
   import axios from 'axios';
-  import { ref, defineComponent } from 'vue';
 
-  export default defineComponent({
+  export default {
     components: {
       QuillEditor
     },
@@ -76,32 +73,6 @@
     mounted() {
       // It is executed after the component has been mounted on the DOM
       this.fetchSectionData(this.$route.params.section);
-    },
-    setup() {
-      // setup() gets called before the component is created
-      // Register the image uploader module
-      const modules = {
-        name: 'imageUploader',
-        module: ImageUploader,
-        options: {
-          upload: file => {
-            return new Promise((resolve, reject) => {
-              const formData = new FormData();
-              formData.append("image", file);
-
-              axios.post('/upload-image', formData)
-                .then(res => {
-                  console.log(res);
-                  resolve(res.data.url);
-                })
-                .catch(err => {
-                  reject("Upload failed");
-                  console.error("Error:", err);
-                });
-            });
-          }
-        }
-      };
     },
     methods: {
       fetchSectionData(section) {
@@ -219,7 +190,7 @@
       this.fetchSectionData(to.params.section); // we call the fetchSectionData method with the new section name
       next(); // gives Vue Router the order to continue with the navigation to the new route
     }
-  })
+  }
 </script>
 
 <style>

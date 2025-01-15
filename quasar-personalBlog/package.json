@@ -2,7 +2,7 @@
   "name": "quasar-personalblog",
   "version": "0.0.1",
   "description": "Blog in Quasar",
-  "productName": "Quasar Personal Blog",
+  "productName": "Marc Padrós Jiménez",
   "author": "Marc Padrós <marcpj14@gmail.com>",
   "private": true,
   "scripts": {
@@ -10,7 +10,8 @@
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build"
+    "build": "quasar build",
+    "test:unit": "jest"
   },
   "dependencies": {
     "@jamescoyle/vue-icon": "^0.1.2",
@@ -25,13 +26,18 @@
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.9.0",
+    "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.2",
+    "babel-jest": "^26.6.3",
+    "cypress": "^13.17.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
+    "jest": "^26.6.3",
     "postcss": "^8.4.14",
     "prettier": "^2.5.1",
-    "vite-plugin-checker": "^0.8.0"
+    "vite-plugin-checker": "^0.8.0",
+    "vue-jest": "^5.0.0-alpha.10"
   },
   "engines": {
     "node": "^20 || ^18 || ^16",
