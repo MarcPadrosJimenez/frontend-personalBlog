@@ -114,9 +114,9 @@
         tennis:
           "Tennis is my favorite sport. I have been playing since I was 10 years old and I am a federated player",
         cooking:
-          "Cooking is one of my hobbies. I love to cook and try new recipes. My favorite dish is paella",
+          "Cooking is one of my hobbies. I love to cook and try new recipes.",
         trips:
-          "I love to travel and discover new places. I want to visit all the countries in the world",
+          "I love to travel and I want to discover new places and cultures",
       };
     },
 };
