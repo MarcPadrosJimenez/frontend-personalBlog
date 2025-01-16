@@ -1,9 +1,9 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
     <h2>{{ $route.params.section }}</h2>
-    <q-btn color="white" v-if="!enableWriting" @click="handleClickCreate" text-color="black" label="Create" />
-    <q-btn color="white" v-if="enableWriting" @click="handleClickSave" text-color="black" label="Save" />
-    <q-btn color="white" v-if="enableWriting" @click="handleClickCancel" text-color="black" label="Cancel" />
+    <q-btn color="white" v-show="false" v-if="!enableWriting" @click="handleClickCreate" text-color="black" label="Create" />
+    <q-btn color="white" v-show="false" v-if="enableWriting" @click="handleClickSave" text-color="black" label="Save" />
+    <q-btn color="white" v-show="false" v-if="enableWriting" @click="handleClickCancel" text-color="black" label="Cancel" />
   </div>
   <div class="editorPost">
     <QuillEditor v-if="enableWriting && newPost" id="newPost" :modules="modules" theme="snow" toolbar="full" /> <!-- TODO: understand why the v-if order matters-->
@@ -43,8 +43,8 @@
             <button class="ql-formula"></button>
             <button class="ql-clean"></button>
             <!-- But you can also add your own -->
-            <button :id="'editBtn-' + post.id" @click="makePostEditable(post.id)">Edit</button> <!-- the : allows generating the id dynamically -->
-            <button :id="'deleteBtn-' + post.id" @click="deletePost(post.id)">Delete</button> <!-- the : allows generating the id dynamically -->
+            <button v-show="false" :id="'editBtn-' + post.id" @click="makePostEditable(post.id)">Edit</button> <!-- the : allows generating the id dynamically -->
+            <button v-show="false" :id="'deleteBtn-' + post.id" @click="deletePost(post.id)">Delete</button> <!-- the : allows generating the id dynamically -->
           </div>
         </template>
       </QuillEditor>
