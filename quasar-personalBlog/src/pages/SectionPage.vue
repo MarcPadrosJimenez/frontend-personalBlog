@@ -5,7 +5,9 @@
     <q-btn color="white" v-if="enableWriting" @click="handleClickSave" text-color="black" label="Save" />
     <q-btn color="white" v-if="enableWriting" @click="handleClickCancel" text-color="black" label="Cancel" />
   </div>
-  <QuillEditor class="editorPost" v-if="enableWriting && newPost" id="newPost" :modules="modules" theme="snow" toolbar="full" /> <!-- TODO: understand why the v-if order matters-->
+  <div class="editorPost">
+    <QuillEditor v-if="enableWriting && newPost" id="newPost" :modules="modules" theme="snow" toolbar="full" /> <!-- TODO: understand why the v-if order matters-->
+  </div>
   <ul v-if="posts.length > 0">
     <li v-for="post in posts" :key="post.id" class="editorPost">
       <QuillEditor :toolbar="'#customToolbar-' + post.id" content-type="html" :modules="modules" v-model:content="post.content" :readOnly="true" :ref="'quillEditor-' + post.id">
@@ -197,6 +199,7 @@
   .editorPost {
     list-style-type: none;
     margin-bottom: 30px;
-    margin-right: 20px;
+    margin-right: 40px;
+    margin-left: 40px;
   }
 </style>
